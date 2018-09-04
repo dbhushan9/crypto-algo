@@ -11,40 +11,69 @@
             
 </head>
 <body>
-	<div class="container">
-		<form id="myform" data-url="{%url 'algorithms:eucledian' %}" method="post">
-			{% csrf_token %}
-			{{form}}
-			<input class="btn" type="submit">
-		</form>
-		{% if gcd %}
-			<p>GCD of {{n1}} and {{n2}} is {{gcd}}</p>
-		{% endif %}
-		</div>
+<div class="valign-wrapper" style="width:100%;height:100%;position: absolute;">
+    <div class="valign" style="width:100%;">
+        <div class="container">
+        	<div class="row">
+        		<div class="col sm-12 m6 offset-m3">
+					<form  id="myform" data-url="{%url 'algorithms:eucledian'%}" method="post">
+						{% csrf_token %}
+						<div class="card">
+							<div class="card-content">
+								<span class="card-title center"><b>Greatest Common Divisor</b></span>
+								<div class="row">
+								{% for f in form%}
+									<div class=" input-field col s10 offset-s1"><label class="active">Number {{forloop.counter}}</label>{{f}}</div>
+								{% endfor %}
+								</div>
+								<h6 id="gcd" class="flow-text center-align"></h6>
+							</div>
+							<div class="card-action center">
+								<input class="btn" type="submit" value="calculate">
+                    		</div>
+						</div> 
+					</form>       			
+        		</div>
+        	</div>
+        </div>
+    </div>
+</div>
 
-		<script type="text/javascript">
-			var $myForm = 	$('#myform');
-			$myForm.submit(function (event) {
-				event.preventDefault();
-				var $formData = $myForm.serialize();
-				var $thisURL = $myForm.attr('data-url')||window.location.href;
 
-				$.ajax({
-					method:'POST',
-					url: $thisURL,
-					data: $formData,
-					success:handleSuccess,
-					error:handleError
-				});
-				function handleSuccess(data) {
-					console.log(data);
-				}
-				function handleError(ThrowError) {
-					console.log(ThrowError);
-				}
+<script type="text/javascript">
+	var $myForm = 	$('#myform');
+	$myForm.submit(function (event) {
+		event.preventDefault();
+		var $formData = $myForm.serialize();
+		var $thisURL = $myForm.attr('data-url')||window.location.href;
 
-			})
+		$.ajax({
+			method:'POST',
+			url: $thisURL,
+			data: $formData,
+			success:handleSuccess,
+			error:handleError
+		});
+		function handleSuccess(data) {
+			console.log(data);
+			$('#gcd').html('GCD of '+$('#id_number1').val()+' and '+$('#id_number2').val()+' is '+data.message); 
+		}
+		function handleError(ThrowError) {
+			console.log(ThrowError);
+			$('#gcd').html('');
+		}
+	})
+</script>
+<script type="text/javascript">
+	$("#id_number1").change(function(){
+		if($('#id_number2').val().length != 0)
+    		$('#myform').submit();
+	}); 
+	$("#id_number2").change(function(){
+		if($('#id_number1').val().length != 0)
+    		$('#myform').submit();
+	}); 
+</script>
 
-		</script>
 </body>
 </html>

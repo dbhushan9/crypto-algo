@@ -28,12 +28,5 @@ def eucledian(request):
 				'message':gcd
 			}
 			return JsonResponse(data)
-
-
-	if request.method == 'POST':
-		form = Eucledian_f(request.POST)
-		if form.is_valid():
-			print(form)
-			return render(request,'algorithms/eucledian.html',{'form':form,'gcd':gcd,'n1':n1,'n2':n2})
 	
 	return render(request,'algorithms/eucledian.html',{'form':form})
