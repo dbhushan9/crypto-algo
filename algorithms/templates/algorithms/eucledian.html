@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	 <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+            
+</head>
+<body>
+	<div class="container">
+		<form id="myform" data-url="{%url 'algorithms:eucledian' %}" method="post">
+			{% csrf_token %}
+			{{form}}
+			<input class="btn" type="submit">
+		</form>
+		{% if gcd %}
+			<p>GCD of {{n1}} and {{n2}} is {{gcd}}</p>
+		{% endif %}
+		</div>
+
+		<script type="text/javascript">
+			var $myForm = 	$('#myform');
+			$myForm.submit(function (event) {
+				event.preventDefault();
+				var $formData = $myForm.serialize();
+				var $thisURL = $myForm.attr('data-url')||window.location.href;
+
+				$.ajax({
+					method:'POST',
+					url: $thisURL,
+					data: $formData,
+					success:handleSuccess,
+					error:handleError
+				});
+				function handleSuccess(data) {
+					console.log(data);
+				}
+				function handleError(ThrowError) {
+					console.log(ThrowError);
+				}
+
+			})
+
+		</script>
+</body>
+</html>
